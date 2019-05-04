@@ -1,0 +1,3 @@
+set autoindent
+set cindent
+autocmd BufNewFile *.cpp r~/programming/competitive/.snippet.cpp
