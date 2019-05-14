@@ -2,7 +2,8 @@
 using namespace std;
 
 /* Alternative: Editorial solution
-   Idea is to find longest palindrome length starting from index 0 . Differece of this length from string length is the required value
+   The idea is to check if the starting characters are present in the string already. If they're not, then it does not make sense to include them in the first half of the palindrome, hence you reset your start to zero and move further in from the right hoping to find a copy of the starting character. If they are present, the center of symmetry is further ahead.
+
 	int Solution::solve(string A) {
 	int start = 0 , end = A.length()-1;
 	int temp_end = end;
