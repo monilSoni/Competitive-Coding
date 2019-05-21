@@ -24,34 +24,32 @@ typedef vector<long long> vl;
 #define se second
 #define ALL(x) x.begin(),x.end()
 
-int solve(vector<int> &a){
-	bool isFirst = true;
-        if(a.size() < 3) return a.size();
-        int index = 0;
-        for(int i=0; i<a.size()-2; i++){
-                if(a[i]==a[i+1] && a[i]==a[i+2] && isFirst){
-                        index = i;
-                        isFirst = false;
-                }else if(a[i]==a[i+1] && a[i] == a[i+2]){
-                    continue;
-                }else{
-                    a[index++] = a[i];
-                }
+int solve(vector<int> &A) {
+    int i = 0, j = 1, n = A.size(), count = 1;
+    if(n < 3)
+        return n;
+
+    while(i < n && j < n){
+        if(i+1 < n && (A[i] != A[j] || (A[i] == A[j] && count < 2 ))){
+            if(A[i] == A[j])
+                count ++;
+            else
+                count = 1;
+
+            A[++i] = A[j];
         }
-        a[index++] = a[a.size()-2];
-        a[index++] = a[a.size()-1];
-        a.erase(a.begin()+index, a.end());
-	return a.size();
+        j++;
+    }
+
+    A.erase(A.begin()+i+1, A.end());
+    return A.size();
 }
 
 int main(){
 	int n,x;
-	vector<int> v;
 	scanf("%d",&n);
-	_for(i,n){
-		scanf("%d",&x);
-		v.pb(x);
-	}
+	vector<int> v(n);
+	_for(i,n)   cin >> v[i];
 	printf("\n%d\n",solve(v));
 	return 0;
 }

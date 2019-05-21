@@ -24,43 +24,31 @@ typedef vector<long long> vl;
 #define se second
 #define ALL(x) x.begin(),x.end()
 
-vector<vector<int> > threeSum(vector<int> &a) {
-	sort(a.begin(), a.end());
-        vector<int> x;
-        vector<vector<int>> v;
-        if(a.size() < 3) return v;
-        int p = INT_MAX;
-        int q = INT_MAX;
-        int r = INT_MAX;
-        int count = 0;
-        for(int i=0; i<a.size()-2; i++){
-                int start = i+1;
-                int end = a.size()-1;
-                while(start<end){
-                        if(a[i]+a[start]+a[end] == 0){
-                            if(a[start] == a[start-1] && a[end] == a[end+1]){
-                                start++;
-                                end--;
-                                continue;
-                            }
-                            x.push_back(a[i]);
-                            x.push_back(a[start]);
-                            x.push_back(a[end]);
-                            v.push_back(x);
-                            x.clear();
-                            start++;
-                            end--;
-                        }
-                        if(a[start]+a[end] < 0-a[i])
-                                start++;
-                        else if(a[start]+a[end] > 0-a[i])
-                                end--;
-                }
-        }
-        set<vector<int>> s( v.begin(), v.end() );
-        v.assign( s.begin(), s.end() );
-        return v;
+vector<vector<int>> threeSum(vector<int> &A) {
+    vector<vector<int>> result;
+    if(A.size() < 3)
+        return result;
+    sort(A.begin(), A.end());
 
+    set<vector<int>> temp_result;
+    for(int i=0; i<A.size()-2; i++){
+        int start = i+1, end = A.size()-1;
+        while(start < end){
+            if(A[i]+A[start]+A[end] == 0){
+                vector<int> v = {A[i], A[start], A[end]};
+                temp_result.insert(v);
+                start++, end--;
+            }else if(A[start] + A[end] < -A[i]){
+                start++;
+            }else{
+                end--;
+            }
+        }
+    }
+
+    for(auto itr : temp_result) result.push_back(itr);
+
+    return result;
 }
 
 
