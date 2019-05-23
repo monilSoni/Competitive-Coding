@@ -42,36 +42,32 @@ int length(ListNode* A){
 }
 
 ListNode* Solution::reverseList(ListNode* A, int B) {
-        ListNode* prev = NULL;
-    ListNode* curr = A;
-    ListNode* head = A;
-    ListNode* next;
-    ListNode* previous_head;
-    ListNode* final_head;
     int n = length(A);
-    for(int i=0; i<n/B; i++){
-        head = curr;
-        if(i == n-1) prev = NULL;
-        int count = 0;
-        while(count<B){
+    ListNode* dummy;
+    ListNode* prev_dummy;
+    ListNode* curr = A;
+    ListNode* prev;
+    ListNode* next;
+    for(int i=0; i<n/k; i++){
+        dummy = curr;
+        for(int j=0; j<k; j++){
             next = curr->next;
             curr->next = prev;
             prev = curr;
             curr = next;
-            count++;
         }
-        if(i==0){
-            final_head = prev;
-        }else{
-            previous_head->next = prev;
-        }
-        previous_head = head;
+        dummy -> next = curr;
+        if(i == 0)
+            A = prev;
+        else
+            prev_dummy->next = prev;
+        prev_dummy = dummy;
     }
-    head->next = NULL;
-    return final_head;
+
+    return A;
 }
 
-/* Above code is done by me. However, I found even faster solution that uses recursion. I guess, recursion is a popular tool for solving linked list problems. Find the code below 
+/* Above code is done by me. However, I found even faster solution that uses recursion. I guess, recursion is a popular tool for solving linked list problems. Find the code below. However, it does not follow the constant space constraint as recursion takes up stack space.
 
 
  * Definition for singly-linked list.
@@ -101,7 +97,5 @@ ListNode* Solution::reverseList(ListNode* A, int B) {
     A->next=reverseList(next,B);
      return prev;
 }
-
-
 */
 

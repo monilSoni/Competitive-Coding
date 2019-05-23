@@ -32,86 +32,26 @@ typedef vector<long long> vl;
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
-int length(ListNode* A){
-    int count = 0;
-    while(A!=NULL){
-        A = A->next;
-        count++;
-    }
-    return count;
-}
-
-
 ListNode* Solution::reverseBetween(ListNode* A, int m, int n) {
-    ListNode* previous = NULL;
-    ListNode* current = A;
-    ListNode* prev;
-    ListNode* curr;
+    ListNode* prev = new ListNode(0);
+    ListNode* curr = A;
     ListNode* next;
-    int len = length(A);
-    if(len == 1) return A;
-    for(int i=1; i<=len; i++){
-        if(i == m){
-            prev = NULL;
-            curr = current;
-            while(i++ <= n){
-                next = curr->next;
-                curr->next = prev;
-                prev = curr;
-                curr = next;
-            }
-            if(m!=1) previous->next = prev;
-            current->next = curr;
-            break;
-        }
-        previous = current;
-        current = current->next;
+    for(int i=1; i<m; i++){
+        prev = curr;
+        curr = curr->next;
     }
 
-    if(m == 1) return prev;
-    return A;
+    ListNode* dummy_1 = prev;
+    ListNode* dummy_2 = curr;
+    for(int i=0; i<=n-m; i++){
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+
+    dummy_1 ->next = prev;
+    dummy_2 ->next = curr;
+
+    return (m == 1) ? dummy_1->next : A;
 }
-
-/*Below is the editorial solution. It uses a function to reverse the linked list, adjusts the pointers and then returns it. It is a clean implementation of the thing that I did with iteration
-
-    // Reverses the linkedList which starts from head, and extends to size nodes.
-    // Returns the end node.
-    // Also sets the head->next as endNode->next.
-    ListNode *reverseLinkedList(ListNode *head, int size) {
-    if (size <= 1) return head;
-        ListNode *cur = head, *nextNode = head->next, *tmp;
-
-    for (int i = 0; i < (size - 1); i++) {
-        tmp = nextNode->next;
-        nextNode->next = cur;
-        cur = nextNode;
-        nextNode = tmp;
-    }
-
-    head->next = nextNode;
-    return cur;
-    }
-
-    ListNode *reverseBetween(ListNode *head, int m, int n) {
-    // Introduce dummyhead to not handle corner cases.
-    ListNode* dummyHead = new ListNode(0);
-    dummyHead->next = head;
-
-    // Figure out the start node of the sublist we are going to reverse
-      ListNode* prev = dummyHead;
-    ListNode* cur = head;
-    int index = 1;
-    while (index < m) {
-        prev = cur;
-        cur = cur->next;
-        index++;
-    }
-
-    // At this point, we have start of sublist in cur, prev of startSubList in prev.
-    // Lets reverse the sublist now.
-    ListNode* endSubList = reverseLinkedList(cur, n - m + 1);
-    prev->next = endSubList;
-
-    return dummyHead->next;
-    }
-};*/

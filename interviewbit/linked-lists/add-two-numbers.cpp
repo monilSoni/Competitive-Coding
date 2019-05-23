@@ -33,88 +33,27 @@ typedef vector<long long> vl;
  * };
  */
 
-int length(ListNode* A){
-    int count = 0;
-    while(A!=NULL){
-        A = A->next;
-        count++;
-    }
-    return count;
-}
-
 ListNode* Solution::addTwoNumbers(ListNode* A, ListNode* B) {
-    ListNode* num = A;
-    ListNode* head;
-    ListNode* prev;
-    int a = length(A);
-    int b = length(B);
-    ListNode* num1 = A;
-    ListNode* num2 = B;
-    int carry = 0;
-    ListNode* temp;
-    bool isFirst = true;
-    for(int i=0; i<min(a,b); i++){
-        int sum = num1->val + num2->val + carry;
-        temp = new ListNode(sum%10);
-        carry = sum/10;
-        if(isFirst){
-            head = temp;
-            isFirst = false;
-        } else{
-            prev->next = temp;
-        }
-        prev = temp;
-        num1 = num1->next;
-        num2 = num2->next;
-    }
-    if(b>a) num1 = num2;
-    while(num1!=NULL){
-        int sum = num1->val + carry;
-        temp = new ListNode(sum%10);
-        carry = sum/10;
-        prev->next = temp;
-        prev = temp;
-        num1 = num1->next;
+    ListNode* prev = new ListNode(0);
+    ListNode* dummy = new ListNode(0);
+    dummy = prev;
+
+    int a, b, c = 0;
+    while(A != NULL || B != NULL){
+        a = (A) ? A->val : 0;
+        b = (B) ? B->val : 0;
+        ListNode* s = new ListNode((a+b+c)%10);
+        prev->next = s;
+        prev = s;
+        c = (a+b+c)/10;
+        if(A) A = A->next;
+        if(B) B = B->next;
     }
 
-    if(carry!=0){
-        temp = new ListNode(carry);
-        prev->next = temp;
+    if(c){
+        ListNode* s = new ListNode(c);
+        prev->next = s;
     }
 
-    return head;
+    return dummy->next;
 }
-
-/* Below is the editorial solution. The thing to note is how beautifully it merges the cases where one of the lists is shorter than the other. My method was to build upon a simple and more general case in order to cover the corner case. It was clear trailing zeros will be the case when sum is zero and not sum%10. LPT: Next time you think about numbers and linked lists think only about numbers. When will this case arise, what will you do on paper? For example here when one list is smaller than the other you just add zero and append it to the list. Same should be done in code. Anyway have a look below:
- class Solution {
-    public:
-        ListNode *addTwoNumbers(ListNode *l1, ListNode *l2) {
-            if(!l1)
-                return l2;
-            if(!l2)
-                return l1;
-
-            int carry = (l1->val + l2->val) / 10;
-            ListNode *l3 = new ListNode((l1->val + l2->val) % 10);
-            ListNode *tail = l3;
-            l1 = l1->next;
-            l2 = l2->next;
-
-            while(l1 || l2 || carry)
-            {
-                int sum = ((l1 ? l1->val : 0) + (l2 ? l2->val : 0) + carry);
-                ListNode *t  = new ListNode(sum % 10);
-                carry = sum / 10;                                          
-
-                if(l1)
-                    l1 = l1->next;
-                if(l2)
-                    l2 = l2->next;
-                tail->next = t;
-                tail = t;
-            }
-
-            return l3;
-        }
-};
-*/
