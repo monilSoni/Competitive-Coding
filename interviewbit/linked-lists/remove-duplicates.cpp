@@ -34,15 +34,15 @@ typedef vector<long long> vl;
  */
 ListNode* Solution::deleteDuplicates(ListNode* A) {
     ListNode* prev = A;
-    ListNode* current = A->next;
-    while(current!=NULL){
-        if(current->val == prev->val){ // Check if the current value is equal to previous
-            prev->next = current->next; // Adjust the next pointer of the previous element but do not move the prev pointer
-        }else{
-            prev = current; //If no duplicate then advance the prev pointer
-        }
-        current = current->next;
+    ListNode* curr = A->next;
+    while(prev && curr){
+        while(curr && prev->val == curr->val)
+            curr = curr->next;
+        prev ->next = curr;
+        prev = curr;
+        curr = curr ->next;
     }
+
     return A;
 }
 

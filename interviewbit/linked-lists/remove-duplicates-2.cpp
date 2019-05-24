@@ -57,3 +57,25 @@ ListNode* Solution::deleteDuplicates(ListNode* A) {
     return dummyhead->next;
 }
 
+
+
+ListNode* Solution::deleteDuplicates(ListNode* A) {
+    ListNode* prev = new ListNode(0);
+    prev ->next = A;
+    ListNode* curr = A;
+    ListNode* dummy = prev;
+
+    bool check = false;
+    while(curr){
+        check = false;
+        while(curr && curr->next && curr ->val == curr ->next ->val)
+            curr = curr->next, check = true;
+
+        (check) ? prev ->next = curr ->next : prev = curr;
+        curr = curr->next;
+    }
+
+    return dummy->next;
+}
+
+
