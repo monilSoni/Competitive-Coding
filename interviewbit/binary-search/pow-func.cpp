@@ -1,20 +1,20 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int pow(int x_temp, int n_temp, int d_temp) {
-    long long int x = x_temp, n = n_temp, d = d_temp;
-    long long int ans;
+int pow(int x, int n, int d) {
+    long long X = (long long)x;
+    long long N = (long long)n;
+    long long D = (long long)d;
+    long long result;
     if(n==0)
-        return 1%d;
-    else if(n%2==0){
-        ans = pow(   ((x%d) * (x%d))%d, n/2, d    );
-        if(ans < 0) ans = ans + d;
-        return ans;
+        return 1%D;
 
-    }else
-        ans = (    x   *  pow(   ((x%d) * (x%d))%d, (n-1)/2, d   )       )%d;
-        if(ans < 0) ans = ans + d;
-        return ans;
+    long long temp = ((X%D)*(X%D)+D)%D;
+    (n%2 == 0) ? 
+        result = (pow(temp, N/2, D) + D)%D :
+        result = (((X%D)*pow(temp, (N-1)/2, D)%D) + D)%D;
+
+    return (result < 0)? result+D : result;
 }
 
 int main(){

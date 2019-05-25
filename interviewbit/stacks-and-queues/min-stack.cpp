@@ -24,43 +24,32 @@ typedef vector<long long> vl;
 #define se second
 #define ALL(x) x.begin(),x.end()
 
-stack<int> minstack;
-stack<int> s;
+stack<int> s, min_s;
 
 MinStack::MinStack() {
-    while(!s.empty()){
-        s.pop();
-    }
-    while(!minstack.empty()){
-        minstack.pop();
-    }
+    while(!s.empty()) s.pop();
+    while(!min_s.empty()) min_s.pop();
 }
 
 void MinStack::push(int x) {
-    if(minstack.empty()){
-        minstack.push(x);
-    }else if(x <= minstack.top())
-        minstack.push(x);
-    else
-        minstack.push(minstack.top());
     s.push(x);
+    if(min_s.empty() || (!min_s.empty() && x <= min_s.top()))
+        min_s.push(x);
 }
 
 void MinStack::pop() {
     if(!s.empty()){
+        int top = s.top();
         s.pop();
-        minstack.pop();
+        if(!min_s.empty() && top == min_s.top())
+            min_s.pop();
     }
 }
 
 int MinStack::top() {
-    if(s.empty()) return -1;
-    return s.top();
+    return (s.empty()) ? -1 : s.top();
 }
 
 int MinStack::getMin() {
-    if(minstack.empty()) return -1;
-    return minstack.top();
+    return (min_s.empty()) ? -1 : min_s.top();
 }
-
-

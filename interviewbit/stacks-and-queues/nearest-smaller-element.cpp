@@ -34,23 +34,13 @@ This is a very nice approach.
 
 */
 vector<int> Solution::prevSmaller(vector<int> &A) {
-        vector<int> G;
-        G.push_back(-1);
-        stack<int> s;
-        s.push(A[0]);
-        for(int i=1; i<A.size(); i++){
-            while(s.top()>=A[i]){
-                s.pop();
-                if(s.empty())
-                    break;
-            }
-            if(s.empty())
-                G.push_back(-1);
-            else
-                G.push_back(s.top());
-            s.push(A[i]);
-        }
-
-        return G;
+    stack<int> s;
+    vector<int> v;
+    for(int i=0; i<A.size(); i++){
+        while(!s.empty() && s.top() >= A[i])
+            s.pop();
+        v.push_back((s.empty()) ? -1 : s.top());
+        s.push(A[i]);
     }
-
+    return v;
+}
