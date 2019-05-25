@@ -24,6 +24,8 @@ typedef vector<long long> vl;
 #define se second
 #define ALL(x) x.begin(),x.end()
 
+
+
 /**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -34,35 +36,31 @@ typedef vector<long long> vl;
  */
 int length(ListNode* A){
     int count = 0;
-    while(A!=NULL){
-        A=A->next;
-        count++;
-    }
+    while(A)
+        A = A->next, count++;
     return count;
 }
 
-ListNode* Solution::rotateRight(ListNode* A, int k) {
-    int len = length(A);
-    if(len==1) return A;
-    if(k%len == 0) return A;
-    k = len-(k%len);
-    ListNode* head;
-    ListNode* current = A;
-    for(int i=1; i<=len; i++){
-        if(i==k){
-            head = current->next;
-            current->next = NULL;
-            break;
-        }
-        current = current->next;
+ListNode* Solution::rotateRight(ListNode* A, int B) {
+    int n = length(A);
+    B = (B % n);
+    if(B == 0)
+        return A;
+
+    B = n - B;
+    ListNode* prev = new ListNode(0); prev->next = A;
+    ListNode* curr = A;
+    for(int i=0; i<B; i++){
+        prev = curr;
+        curr = curr->next;
     }
 
-    ListNode* temp = head;
-    while(temp->next!=NULL){
-        temp=temp->next;
+    prev->next = NULL;
+    ListNode* dummy = new ListNode(0);
+    dummy ->next = curr;
+    while(curr->next){
+        curr = curr->next;
     }
-    temp->next = A;
-    return head;
-
+    curr ->next = A;
+    return dummy->next;
 }
-

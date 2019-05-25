@@ -34,29 +34,24 @@ typedef vector<long long> vl;
  */
 int length(ListNode* A){
     int count = 0;
-    while(A!=NULL){
-        A=A->next;
-        count++;
-    }
+    while(A)
+        A = A->next, count++;
     return count;
 }
 
-ListNode* Solution::removeNthFromEnd(ListNode* A, int n) {
-    int len = length(A);
-    if(n>len) n=1;
-    else n=len-n+1;
-    ListNode* current = A;
-    ListNode* dummyhead = new ListNode(0);
-    dummyhead->next = A;
-    ListNode* previous = dummyhead;
-    for(int i=1; i<=len; i++){
-        if(i==n){
-            previous->next = current->next;
-        }
-        previous = current;
-        current = current->next;
+ListNode* Solution::removeNthFromEnd(ListNode* A, int B) {
+    int n = length(A);
+    B = n - min(B, n);
+
+    ListNode* prev = new ListNode(0); prev->next = A;
+    ListNode* curr = A;
+    ListNode* dummy = prev;
+    for(int i=0; i<B; i++){
+        prev = curr;
+        curr = curr->next;
     }
 
-    return dummyhead->next;
-}
+    prev ->next = curr->next;
+    return dummy->next;
 
+}

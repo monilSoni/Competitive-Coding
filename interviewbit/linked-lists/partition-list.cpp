@@ -33,73 +33,24 @@ typedef vector<long long> vl;
  * };
  */
 ListNode* Solution::partition(ListNode* A, int B) {
-    ListNode* current = A;
-    ListNode* head1;
-    ListNode* head2;
-    ListNode* prev1;
-    ListNode* prev2;
-    ListNode* temp;
-    int count1 = 0, count2 = 0;
-    bool isFirst1 = true, isFirst2 = true;
-    while(current!=NULL){
-        temp = new ListNode(current->val);
-        if(current->val < B){
-            count1++;
-            if(isFirst1){
-                head1 = temp;
-                isFirst1 = false;
-            } else{
-                prev1->next = temp;
-            }  prev1 = temp;
-        } else{
-            count2++;
-            if(isFirst2){
-                head2 = temp;
-                isFirst2 = false;
-            } else{
-                prev2->next = temp;
-            } prev2 = temp;
-        } 
-        current = current->next;
-    }
-    if(count1 == 0){
-        return head2;
-    } else if(count2 == 0){
-        return head1;
-    }
-    prev1->next = head2;
-    return head1;
-}
+    ListNode* l1 = new ListNode(0); l1->next = A;
+    ListNode* l2 = new ListNode(0);
+    ListNode* dummy1 = l1;
+    ListNode* dummy2 = l2;
 
-
-/* Following is the editorial solution. It sort of captures the alternative method that I thought of, that is appending numbers greater to end of the list. 
-   You will need to maintain two pointers,a start and an end. And going through the list we check if the number is greater, if it is we then append it to the end of the list 
-
-   ListNode *partition(ListNode *head, int x) {
-
-            if (!head) return NULL;
-            ListNode * iterator = head;
-
-            ListNode * start = new ListNode(0); // list of nodes greater than x
-            ListNode * tail = start;
-
-            ListNode * newHead = new ListNode(0);
-            newHead -> next = head;
-            ListNode * pre = newHead; // previous node, we need it for removing
-
-
-            while (iterator) {
-                if (iterator -> val >= x) {
-                    pre -> next = iterator -> next; // remove from our list
-                    tail -> next = iterator; // add to list of nodes greater than x
-                    tail = tail -> next;
-                    iterator = iterator -> next;
-                    tail -> next = NULL;
-                }
-                else
-                    pre = iterator, iterator = iterator -> next;
-            }
-            pre -> next = start -> next;
-            return newHead -> next;
+    ListNode* x = A;
+    while(x){
+        if(x->val < B){
+            l1 ->next = x->next;
+            l2->next = x;
+            l2 = l2->next;
+            x = l1->next;
+        }else{
+            l1 = x;
+            x = x->next;
         }
-*/
+    }
+
+    l2->next = dummy1->next;
+    return dummy2->next;
+}
