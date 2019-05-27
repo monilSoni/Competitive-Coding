@@ -1,30 +1,31 @@
-vector<vector<int>> func(vector<int> &A, int start){
-        vector<vector<int>> v;
-        if(A.size()-start == 1){
-            vector<int> x; x.push_back(A[start]);
-            v.push_back(x);
-            return v;
-        }else{
-        v = func(A, start+1);
-        int e = A[start];
-        int n = v.size();
-        for(int i=0; i<n; i++){
-            for(int j=0; j<=v[i].size(); j++){
-                vector<int> x = v[i];
-                x.insert(x.begin()+j, e);
-                v.push_back(x);
-            } 
-        }
-        v.erase(v.begin(), v.begin()+n);
+void solve(vector<int> &A, vector<vector<int>> &result, vector<bool> visited, vector<int> p){
+    if(p.size() == A.size()){
+        result.push_back(p);
+        return;
     }
-    return v;
+
+    for(int i=0; i<A.size(); i++){
+        if(!visited[i]){
+            p.push_back(A[i]);
+            visited[i] = true;
+            solve(A, result, visited, p);
+            visited[i] = false;
+            p.pop_back();
+        }
+    }
+
+    return;
 }
 
 vector<vector<int> > Solution::permute(vector<int> &A) {
-    vector<vector<int>> v = func(A, 0);
-    sort(v.begin(), v.end());
-    return v;
+    sort(A.begin(), A.end());
+    vector<vector<int>> result;
+    vector<int> p;
+    vector<bool> visited(A.size(), false);
+    solve(A, result, visited, p);
+    return result;
 }
+
 
 /* Editorial Solution */
 void permute(vector<int> &num, int start, vector<vector<int> > &result) {
@@ -37,13 +38,4 @@ void permute(vector<int> &num, int start, vector<vector<int> > &result) {
             permute(num, start + 1, result);
             swap(num[start], num[i]);
         }
-    }
-
-    vector<vector<int> > permute(vector<int> &num) {
-        vector<vector<int> > result;
-        if (num.size() == 0)
-            return result;
-        sort(num.begin(), num.end());
-        permute(num, 0, result);
-        return result;
-    }
+}

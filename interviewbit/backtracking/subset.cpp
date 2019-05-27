@@ -1,40 +1,28 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-vector<vector<int> > func(vector<int> &s) {
-    if(s.size() == 1){
-        vector<vector<int>> v;
-        v.push_back(s);
-        return v;
+void solve(vector<int> &A, vector<int> s, vector<vector<int>> &result, int x){
+    if(x == A.size())
+        return;
+
+    for(int i=x; i<A.size(); i++){
+        s.push_back(A[i]);
+        result.push_back(s);
+        solve(A, s, result, i+1);
+        s.pop_back();
     }
-    vector<int> x(s.begin()+1, s.end());
-    vector<vector<int>> v = func(x);
-    int n = v.size();
-    for(int i=0; i<n; i++){
-        x = v[i];
-        x.insert(x.begin(), s[0]);
-        v.push_back(x);
-    }
-    x.clear(); x.push_back(s[0]);
-    v.push_back(x);
-    return v;
+    return;
 }
 
-
-vector<vector<int> > subsets(vector<int> &s) {
-    sort(s.begin(), s.end());
-    vector<vector<int>> v;
-    if(s.size() == 0){
-        vector<int> x; x.clear();
-        v.push_back(x);
-    }else{
-    v = func(s);
-    vector<int> x; x.clear();
-    v.push_back(x);
-    reverse(v.begin(), v.end());
-    }
-    return v;
+vector<vector<int> > subsets(vector<int> &A) {
+    vector<vector<int>> result;
+    vector<int> s;
+    result.push_back(s);
+    sort(A.begin(), A.end());
+    solve(A, s, result, 0);
+    return result;
 }
+
 
 int main(){
 	int n, x;
