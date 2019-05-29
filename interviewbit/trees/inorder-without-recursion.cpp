@@ -29,21 +29,18 @@ typedef vector<long long> vl;
  * };
  */
 vector<int> Solution::inorderTraversal(TreeNode* A) {
-    TreeNode* current = A;
-    stack<TreeNode*> s;
+    stack<TreeNode* > s;
     vector<int> v;
-    while(1){
-        while(current){
-            s.push(current);
-            current = current->left;
+
+    TreeNode* x = A;
+    while(!s.empty() || x){
+        while(x){
+            s.push(x);
+            x = x->left;
         }
-        if(s.empty() && current == NULL){
-            break;
-        }else{
-            v.push_back(s.top()->val);
-            current = s.top()->right;
-            s.pop();
-        }
+        x = s.top(); s.pop();
+        v.push_back(x->val);
+        x = x->right;
     }
 
     return v;
