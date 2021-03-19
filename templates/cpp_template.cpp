@@ -1,6 +1,6 @@
 /* Monil Soni sonil06 */
  
-#include "/Users/monisoni/Competitive-Coding/stdc++.h"
+#include <bits/stdc++.h>
 #include <unistd.h>
  
 using namespace std;
